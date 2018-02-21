@@ -24,6 +24,19 @@ router.get("/api/ships/:id", (req, res, next) => {
         .catch(next);
 });
 
+//Update a ship
+
+router.put("/api/ships/:id", (req, res, next) => {
+    Ships.findByIdAndUpdate(req.params.id, req.body)
+        .then(ship => {
+            if (!ship) {
+                return res.status(400).send({ error: "Invalid id" })
+            }
+            return res.send(ship);
+        })
+        .catch(next)
+})
+
 // CREATE SHIP
 router.post("/api/ships", (req, res, next) => {
     Ships.create(req.body)
@@ -44,7 +57,7 @@ router.post("/api/ships/:id/logs", (req, res, next) => {
 })
 
 //DELETE a log
-router.delete("/api/ships/:id/logs/:id", (req, res, next) => {
+router.delete("/api/ships/:shipId/logs/:id", (req, res, next) => {
     Logs.findByIdAndRemove(req.params.id)
         .then(log => {
             if (!log) {
